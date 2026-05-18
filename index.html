@@ -1,0 +1,1799 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>17-mavzu: Burchaklar va masofalar</title>
+
+<!-- KaTeX for math rendering -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body, {delimiters: [{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}], throwOnError:false});"></script>
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --primary: #6B2FB3;
+    --primary-dark: #4A1F80;
+    --primary-light: #9B6BE0;
+    --primary-soft: #F4EEFF;
+    --accent: #FFB627;
+    --accent-2: #FF6B6B;
+    --accent-3: #4ECDC4;
+    --success: #16A34A;
+    --success-soft: #DCFCE7;
+    --error: #DC2626;
+    --error-soft: #FEE2E2;
+    --text: #1A1325;
+    --text-muted: #6B6478;
+    --bg: #FAF8FF;
+    --card: #FFFFFF;
+    --border: #ECE7F5;
+    --shadow: 0 4px 24px rgba(107, 47, 179, 0.08);
+    --shadow-lg: 0 12px 48px rgba(107, 47, 179, 0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    height: 100%;
+    font-family: 'Manrope', -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    background:
+      radial-gradient(circle at 10% 0%, rgba(155, 107, 224, 0.12) 0%, transparent 50%),
+      radial-gradient(circle at 90% 100%, rgba(255, 182, 39, 0.08) 0%, transparent 50%),
+      var(--bg);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .container {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 24px 20px 80px;
+  }
+
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 32px;
+    padding: 16px 0;
+  }
+
+  .title-block {
+    text-align: center;
+    margin-bottom: 40px;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .topic-label {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    color: white;
+    padding: 8px 18px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    box-shadow: 0 8px 20px rgba(107, 47, 179, 0.25);
+  }
+
+  .title-block h1 {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-size: clamp(28px, 5vw, 44px);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    color: var(--text);
+    margin-bottom: 12px;
+  }
+
+  .title-block .subtitle {
+    color: var(--text-muted);
+    font-size: 16px;
+    max-width: 560px;
+    margin: 0 auto;
+  }
+
+  .screen { display: none; animation: fadeUp 0.4s ease both; }
+  .screen.active { display: block; }
+
+  .variants {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 18px;
+    margin-bottom: 24px;
+  }
+
+  .variant-card {
+    background: var(--card);
+    border: 2px solid var(--border);
+    border-radius: 20px;
+    padding: 28px 24px;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(.2,.9,.2,1);
+    position: relative;
+    overflow: hidden;
+    text-align: left;
+    font-family: inherit;
+  }
+
+  .variant-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--card-gradient);
+    opacity: 0;
+    transition: opacity 0.25s;
+    z-index: 0;
+  }
+
+  .variant-card > * { position: relative; z-index: 1; }
+
+  .variant-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--card-color);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .variant-card:hover::before { opacity: 0.05; }
+
+  .variant-card[data-level="1"] { --card-color: #16A34A; --card-gradient: #16A34A; }
+  .variant-card[data-level="2"] { --card-color: #F59E0B; --card-gradient: #F59E0B; }
+  .variant-card[data-level="3"] { --card-color: #DC2626; --card-gradient: #DC2626; }
+
+  .variant-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: var(--card-color);
+    color: white;
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-weight: 800;
+    font-size: 20px;
+    margin-bottom: 16px;
+  }
+
+  .variant-card h3 {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    letter-spacing: -0.02em;
+  }
+
+  .variant-card .level-tag {
+    display: inline-block;
+    background: var(--card-color);
+    color: white;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .variant-card .meta {
+    display: flex;
+    gap: 16px;
+    font-size: 13px;
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+
+  /* Quiz */
+  .quiz-header {
+    background: var(--card);
+    border-radius: 20px;
+    padding: 20px 24px;
+    box-shadow: var(--shadow);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .quiz-info {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .quiz-level-badge {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    color: white;
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-weight: 800;
+    font-size: 18px;
+  }
+
+  .quiz-info-text h3 {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .quiz-info-text p {
+    color: var(--text-muted);
+    font-size: 13px;
+  }
+
+  .progress-text {
+    font-weight: 700;
+    color: var(--primary);
+    font-size: 14px;
+    background: var(--primary-soft);
+    padding: 6px 14px;
+    border-radius: 999px;
+  }
+
+  .progress-bar {
+    height: 8px;
+    background: var(--border);
+    border-radius: 999px;
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--primary-light));
+    border-radius: 999px;
+    transition: width 0.4s cubic-bezier(.2,.9,.2,1);
+    width: 0%;
+  }
+
+  .question-card {
+    background: var(--card);
+    border-radius: 24px;
+    padding: 32px;
+    box-shadow: var(--shadow);
+    margin-bottom: 20px;
+  }
+
+  .q-number {
+    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .q-text {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-size: clamp(18px, 2.6vw, 22px);
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: -0.01em;
+    margin-bottom: 20px;
+    color: var(--text);
+  }
+
+  .q-visual {
+    background: linear-gradient(135deg, #FAFBFF, #F4EEFF);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-x: auto;
+  }
+
+  .q-visual svg {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .options {
+    display: grid;
+    gap: 12px;
+  }
+
+  .option {
+    background: var(--card);
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    padding: 16px 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-family: inherit;
+    font-size: 17px;
+    text-align: left;
+    color: var(--text);
+    width: 100%;
+  }
+
+  .option:hover:not(:disabled) {
+    border-color: var(--primary);
+    background: var(--primary-soft);
+    transform: translateX(2px);
+  }
+
+  .option:disabled { cursor: default; }
+
+  .option-letter {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: var(--primary-soft);
+    color: var(--primary);
+    display: grid;
+    place-items: center;
+    font-weight: 700;
+    font-size: 15px;
+    flex-shrink: 0;
+    transition: all 0.2s;
+  }
+
+  .option:hover:not(:disabled) .option-letter {
+    background: var(--primary);
+    color: white;
+  }
+
+  .option-text { flex: 1; }
+
+  .option.correct {
+    border-color: var(--success);
+    background: var(--success-soft);
+  }
+  .option.correct .option-letter {
+    background: var(--success);
+    color: white;
+  }
+
+  .option.wrong {
+    border-color: var(--error);
+    background: var(--error-soft);
+  }
+  .option.wrong .option-letter {
+    background: var(--error);
+    color: white;
+  }
+
+  .option .option-mark {
+    margin-left: auto;
+    font-size: 22px;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .option.correct .option-mark, .option.wrong .option-mark { opacity: 1; }
+
+  .feedback {
+    margin-top: 20px;
+    padding: 16px 20px;
+    border-radius: 14px;
+    font-size: 15px;
+    display: none;
+    animation: fadeUp 0.3s ease both;
+  }
+  .feedback.show { display: block; }
+  .feedback.correct { background: var(--success-soft); color: #14532D; border-left: 4px solid var(--success); }
+  .feedback.wrong { background: var(--error-soft); color: #7F1D1D; border-left: 4px solid var(--error); }
+  .feedback strong { display: block; margin-bottom: 4px; font-family: 'Bricolage Grotesque', sans-serif; }
+
+  .controls {
+    display: flex;
+    gap: 12px;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .btn {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    padding: 14px 24px;
+    border-radius: 12px;
+    font-size: 15px;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .btn-primary {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 8px 20px rgba(107, 47, 179, 0.25);
+  }
+  .btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 12px 28px rgba(107, 47, 179, 0.35); }
+  .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--text-muted);
+  }
+  .btn-ghost:hover { color: var(--primary); background: var(--primary-soft); }
+
+  /* Result */
+  .result-card {
+    background: var(--card);
+    border-radius: 28px;
+    padding: 48px 32px;
+    box-shadow: var(--shadow-lg);
+    text-align: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .result-card::before {
+    content: '';
+    position: absolute;
+    top: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 200px;
+    background: radial-gradient(ellipse, rgba(107, 47, 179, 0.15), transparent 70%);
+    pointer-events: none;
+  }
+
+  .result-icon {
+    font-size: 72px;
+    margin-bottom: 16px;
+    position: relative;
+  }
+
+  .score-display {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-size: 72px;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+  }
+
+  .score-display .total { color: var(--text-muted); -webkit-text-fill-color: var(--text-muted); font-size: 36px; }
+
+  .result-title {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  .result-message {
+    color: var(--text-muted);
+    font-size: 16px;
+    margin-bottom: 32px;
+  }
+
+  .result-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+
+  .stat {
+    background: var(--bg);
+    border-radius: 14px;
+    padding: 16px 8px;
+  }
+
+  .stat-num {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-size: 24px;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .stat-num.success { color: var(--success); }
+  .stat-num.error { color: var(--error); }
+  .stat-num.primary { color: var(--primary); }
+
+  .result-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .review-list { display: grid; gap: 12px; margin-top: 24px; }
+
+  .review-item {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 20px;
+    border-left: 4px solid var(--success);
+    box-shadow: var(--shadow);
+  }
+  .review-item.wrong { border-left-color: var(--error); }
+
+  .review-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  .review-item-num {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-weight: 700;
+    color: var(--primary);
+    font-size: 14px;
+  }
+
+  .review-item-status {
+    font-size: 12px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 999px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .review-item-status.correct { background: var(--success-soft); color: var(--success); }
+  .review-item-status.wrong { background: var(--error-soft); color: var(--error); }
+
+  .review-item-q { font-size: 15px; margin-bottom: 8px; line-height: 1.5; }
+  .review-item-a { font-size: 14px; color: var(--text-muted); }
+  .review-item-a strong { color: var(--text); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes pop {
+    0% { transform: scale(0.8); opacity: 0; }
+    60% { transform: scale(1.05); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  .pop { animation: pop 0.4s cubic-bezier(.2,.9,.2,1) both; }
+
+  .footer {
+    text-align: center;
+    margin-top: 40px;
+    color: var(--text-muted);
+    font-size: 13px;
+  }
+
+  @media (max-width: 640px) {
+    .container { padding: 16px 14px 60px; }
+    .question-card { padding: 22px 18px; border-radius: 20px; }
+    .q-visual { padding: 12px; border-radius: 12px; }
+    .result-card { padding: 36px 20px; }
+    .score-display { font-size: 56px; }
+    .score-display .total { font-size: 28px; }
+    .controls { flex-direction: column-reverse; align-items: stretch; }
+    .controls .btn { width: 100%; justify-content: center; }
+    .option { font-size: 15px; padding: 14px 16px; gap: 12px; }
+    .option-letter { width: 32px; height: 32px; font-size: 14px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header class="header"></header>
+
+  <div class="title-block">
+    <span class="topic-label">📐 17-mavzu</span>
+    <h1>Burchaklar va<br>masofalar</h1>
+    <p class="subtitle">Kesma, burchak turlari, qo'shni va vertikal burchaklar, bissektrisa, parallel chiziqlar, uchburchak va soat millari — bilimingizni sinab ko'ring.</p>
+  </div>
+
+  <div class="screen active" id="screen-start">
+    <div class="variants">
+      <button class="variant-card" data-level="1" onclick="startQuiz(1)">
+        <div class="variant-num">1</div>
+        <span class="level-tag">Oson</span>
+        <h3>1-variant</h3>
+        <div class="meta">
+          <span>📝 10 ta savol</span>
+          <span>⏱ ~10 daq</span>
+        </div>
+      </button>
+
+      <button class="variant-card" data-level="2" onclick="startQuiz(2)">
+        <div class="variant-num">2</div>
+        <span class="level-tag">O'rtacha</span>
+        <h3>2-variant</h3>
+        <div class="meta">
+          <span>📝 10 ta savol</span>
+          <span>⏱ ~15 daq</span>
+        </div>
+      </button>
+
+      <button class="variant-card" data-level="3" onclick="startQuiz(3)">
+        <div class="variant-num">3</div>
+        <span class="level-tag">Qiyin</span>
+        <h3>3-variant</h3>
+        <div class="meta">
+          <span>📝 10 ta savol</span>
+          <span>⏱ ~20 daq</span>
+        </div>
+      </button>
+    </div>
+
+  </div>
+
+  <div class="screen" id="screen-quiz">
+    <div class="quiz-header">
+      <div class="quiz-info">
+        <div class="quiz-level-badge" id="levelBadge">1</div>
+        <div class="quiz-info-text">
+          <h3 id="levelTitle">1-variant • Oson</h3>
+          <p>Burchaklar va masofalar</p>
+        </div>
+      </div>
+      <div class="progress-text" id="progressText">1 / 10</div>
+    </div>
+
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+    <div class="question-card" id="questionCard"></div>
+
+    <div class="controls">
+      <button class="btn btn-ghost" onclick="exitQuiz()">← Variantlarga</button>
+      <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()" disabled>Keyingi savol →</button>
+    </div>
+  </div>
+
+  <div class="screen" id="screen-result">
+    <div class="result-card">
+      <div class="result-icon" id="resultIcon">🎯</div>
+      <div class="score-display"><span id="finalScore">0</span><span class="total">/10</span></div>
+      <h2 class="result-title" id="resultTitle">Natija tayyor!</h2>
+      <p class="result-message" id="resultMessage">Test yakunlandi.</p>
+
+      <div class="result-stats">
+        <div class="stat">
+          <div class="stat-num success" id="statCorrect">0</div>
+          <div class="stat-label">To'g'ri</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num error" id="statWrong">0</div>
+          <div class="stat-label">Xato</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num primary" id="statPercent">0%</div>
+          <div class="stat-label">Foiz</div>
+        </div>
+      </div>
+
+      <div class="result-actions">
+        <button class="btn btn-ghost" onclick="showReview()">Javoblarni ko'rish</button>
+        <button class="btn btn-primary" onclick="exitQuiz()">Boshqa variant tanlash</button>
+      </div>
+    </div>
+
+    <div id="reviewSection" style="display:none;">
+      <div class="review-list" id="reviewList"></div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    Matematika · 17-mavzu — Burchaklar va masofalar
+  </footer>
+</div>
+
+<script>
+// ============================================================
+// SVG GENERATORLARI
+// ============================================================
+
+// 1) SEGMENT — to'g'ri chiziqda nuqtalar
+function svgSegment({points, segments=[], width=440, height=90}) {
+  // points: [{pos: 0..1, label: 'A'}]
+  // segments: [{from: 0, to: 1, text: '5 sm', above: true/false}]
+  const padL = 35, padR = 35;
+  const lineY = height / 2;
+  const len = width - padL - padR;
+
+  let svg = `<svg viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg">`;
+  svg += `<line x1="${padL}" y1="${lineY}" x2="${width-padR}" y2="${lineY}" stroke="#1A1325" stroke-width="2.5"/>`;
+
+  points.forEach(p => {
+    const x = padL + p.pos * len;
+    svg += `<circle cx="${x}" cy="${lineY}" r="5" fill="#6B2FB3"/>`;
+    svg += `<text x="${x}" y="${lineY+24}" text-anchor="middle" font-size="16" font-weight="700" fill="#1A1325">${p.label}</text>`;
+  });
+
+  segments.forEach(s => {
+    const p1 = points[s.from], p2 = points[s.to];
+    const x1 = padL + p1.pos * len;
+    const x2 = padL + p2.pos * len;
+    const mid = (x1 + x2) / 2;
+    const yLabel = lineY - 12;
+    svg += `<text x="${mid}" y="${yLabel}" text-anchor="middle" font-size="13" font-weight="600" fill="#6B2FB3">${s.text}</text>`;
+    // brackets
+    svg += `<line x1="${x1+1}" y1="${lineY-4}" x2="${x1+1}" y2="${lineY-7}" stroke="#6B2FB3" stroke-width="1.5"/>`;
+    svg += `<line x1="${x2-1}" y1="${lineY-4}" x2="${x2-1}" y2="${lineY-7}" stroke="#6B2FB3" stroke-width="1.5"/>`;
+  });
+
+  svg += `</svg>`;
+  return svg;
+}
+
+// 2) BURCHAK — vertex bilan, bitta burchak
+function svgAngle({degrees, label, width=240, height=200, type='normal'}) {
+  const cx = 60, cy = 150;
+  const rayLen = 150;
+  const arcR = 32;
+
+  // First ray horizontal right
+  const x1 = cx + rayLen;
+  const y1 = cy;
+  // Second ray at angle (CCW from horizontal, but SVG y is inverted)
+  const rad = degrees * Math.PI / 180;
+  const x2 = cx + rayLen * Math.cos(rad);
+  const y2 = cy - rayLen * Math.sin(rad);
+
+  // Arc
+  const ax1 = cx + arcR;
+  const ay1 = cy;
+  const ax2 = cx + arcR * Math.cos(rad);
+  const ay2 = cy - arcR * Math.sin(rad);
+  const largeArc = degrees > 180 ? 1 : 0;
+
+  let svg = `<svg viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg">`;
+  svg += `<line x1="${cx}" y1="${cy}" x2="${x1}" y2="${y1}" stroke="#1A1325" stroke-width="2.5"/>`;
+  svg += `<line x1="${cx}" y1="${cy}" x2="${x2}" y2="${y2}" stroke="#1A1325" stroke-width="2.5"/>`;
+  // arrowhead on second ray
+  svg += `<polygon points="${x1},${y1} ${x1-9},${y1-5} ${x1-9},${y1+5}" fill="#1A1325"/>`;
+  svg += `<polygon points="${x2},${y2} ${x2 - 9*Math.cos(rad) + 5*Math.sin(rad)},${y2 + 9*Math.sin(rad) + 5*Math.cos(rad)} ${x2 - 9*Math.cos(rad) - 5*Math.sin(rad)},${y2 + 9*Math.sin(rad) - 5*Math.cos(rad)}" fill="#1A1325"/>`;
+
+  // Right angle box if 90°
+  if (Math.abs(degrees - 90) < 0.5) {
+    const sz = 14;
+    svg += `<rect x="${cx}" y="${cy - sz}" width="${sz}" height="${sz}" fill="none" stroke="#FFB627" stroke-width="2"/>`;
+  } else {
+    svg += `<path d="M ${ax1} ${ay1} A ${arcR} ${arcR} 0 ${largeArc} 0 ${ax2} ${ay2}" fill="none" stroke="#FFB627" stroke-width="2.5"/>`;
+  }
+
+  // Label
+  const labRad = degrees / 2 * Math.PI / 180;
+  const labR = arcR + 22;
+  const labX = cx + labR * Math.cos(labRad);
+  const labY = cy - labR * Math.sin(labRad);
+  svg += `<text x="${labX}" y="${labY+5}" text-anchor="middle" font-size="16" font-weight="700" fill="#6B2FB3">${label}</text>`;
+
+  // Vertex point
+  svg += `<circle cx="${cx}" cy="${cy}" r="4" fill="#1A1325"/>`;
+  svg += `<text x="${cx-12}" y="${cy+18}" font-size="14" font-weight="700" fill="#1A1325">O</text>`;
+  svg += `<text x="${x1+8}" y="${y1+5}" font-size="14" font-weight="700" fill="#1A1325">B</text>`;
+  svg += `<text x="${x2 + 14*Math.cos(rad)}" y="${y2 - 14*Math.sin(rad) + 5}" font-size="14" font-weight="700" fill="#1A1325" text-anchor="middle">A</text>`;
+
+  svg += `</svg>`;
+  return svg;
+}
+
+// 3) IKKI KESISHUVCHI CHIZIQ
+function svgCross({angle1, label1, label2='?', label3='?', label4='?', width=320, height=240}) {
+  const cx = width / 2, cy = height / 2;
+  const len = 110;
+  const rad = angle1 * Math.PI / 180;
+  // line 1: horizontal
+  // line 2: at angle
+  const e1x = cx + len, e1y = cy;
+  const e2x = cx - len, e2y = cy;
+  const e3x = cx + len * Math.cos(rad), e3y = cy - len * Math.sin(rad);
+  const e4x = cx - len * Math.cos(rad), e4y = cy + len * Math.sin(rad);
+
+  let svg = `<svg viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg">`;
+  svg += `<line x1="${e2x}" y1="${e2y}" x2="${e1x}" y2="${e1y}" stroke="#1A1325" stroke-width="2.5"/>`;
+  svg += `<line x1="${e4x}" y1="${e4y}" x2="${e3x}" y2="${e3y}" stroke="#1A1325" stroke-width="2.5"/>`;
+
+  // Arc for angle 1 (between horizontal-right and angled line going up-right)
+  const r = 28;
+  const a1x = cx + r, a1y = cy;
+  const a2x = cx + r * Math.cos(rad), a2y = cy - r * Math.sin(rad);
+  svg += `<path d="M ${a1x} ${a1y} A ${r} ${r} 0 0 0 ${a2x} ${a2y}" fill="none" stroke="#FFB627" stroke-width="2.5"/>`;
+  // label1
+  const lr = r + 18;
+  const lx = cx + lr * Math.cos(rad/2 * Math.PI/180);
+  const ly = cy - lr * Math.sin(rad/2 * Math.PI/180);
+  svg += `<text x="${lx}" y="${ly+5}" text-anchor="middle" font-size="15" font-weight="700" fill="#6B2FB3">${label1}</text>`;
+
+  // Other labels (in mid of each angle)
+  // angle 2: between angled-up-right and horizontal-left → middle at (angle1 + 180)/2 = 90 + angle1/2
+  if (label2 !== '?' || true) {
+    const a = (angle1 + 180) / 2 * Math.PI / 180;
+    const x = cx + lr * Math.cos(a);
+    const y = cy - lr * Math.sin(a);
+    svg += `<text x="${x}" y="${y+5}" text-anchor="middle" font-size="15" font-weight="700" fill="#1A1325">${label2}</text>`;
+  }
+  // angle 3: vertical to angle 1: between horizontal-left and angled-down-left, middle at 180 + angle1/2
+  if (label3 !== '?' || true) {
+    const a = (180 + angle1/2) * Math.PI / 180;
+    const x = cx + lr * Math.cos(a);
+    const y = cy - lr * Math.sin(a);
+    svg += `<text x="${x}" y="${y+5}" text-anchor="middle" font-size="15" font-weight="700" fill="#1A1325">${label3}</text>`;
+  }
+  // angle 4: adjacent to angle 3
+  if (label4 !== '?' || true) {
+    const a = (360 - (180 - angle1) / 2) * Math.PI / 180;
+    const x = cx + lr * Math.cos(a);
+    const y = cy - lr * Math.sin(a);
+    svg += `<text x="${x}" y="${y+5}" text-anchor="middle" font-size="15" font-weight="700" fill="#1A1325">${label4}</text>`;
+  }
+
+  // intersection point
+  svg += `<circle cx="${cx}" cy="${cy}" r="4" fill="#1A1325"/>`;
+
+  svg += `</svg>`;
+  return svg;
+}
+
+// 4) PARALLEL CHIZIQLAR + KESUVCHI
+function svgParallel({label1, label2, type='corresponding', width=360, height=260}) {
+  // type: 'corresponding', 'alt-interior', 'same-side-interior'
+  const Y1 = 60, Y2 = 200;
+  const padX = 30;
+
+  // Transversal passes through (cx1, Y1) and (cx2, Y2)
+  // tilted: through middle, slope picked for clarity
+  const cx1 = width * 0.62, cx2 = width * 0.38;
+  // Extend transversal to top and bottom
+  const slope = (cx2 - cx1) / (Y2 - Y1);
+  const tx_top = cx1 - slope * 30;
+  const ty_top = Y1 - 30;
+  const tx_bot = cx2 + slope * 30;
+  const ty_bot = Y2 + 30;
+
+  let svg = `<svg viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg">`;
+  // line a (top)
+  svg += `<line x1="${padX}" y1="${Y1}" x2="${width-padX}" y2="${Y1}" stroke="#1A1325" stroke-width="2.5"/>`;
+  svg += `<text x="${width-padX+8}" y="${Y1+5}" font-size="16" font-weight="700" fill="#1A1325">a</text>`;
+  // line b (bottom)
+  svg += `<line x1="${padX}" y1="${Y2}" x2="${width-padX}" y2="${Y2}" stroke="#1A1325" stroke-width="2.5"/>`;
+  svg += `<text x="${width-padX+8}" y="${Y2+5}" font-size="16" font-weight="700" fill="#1A1325">b</text>`;
+  // transversal c
+  svg += `<line x1="${tx_top}" y1="${ty_top}" x2="${tx_bot}" y2="${ty_bot}" stroke="#1A1325" stroke-width="2.5"/>`;
+  svg += `<text x="${tx_top+8}" y="${ty_top-3}" font-size="16" font-weight="700" fill="#1A1325">c</text>`;
+
+  // Mark intersection points
+  svg += `<circle cx="${cx1}" cy="${Y1}" r="3.5" fill="#1A1325"/>`;
+  svg += `<circle cx="${cx2}" cy="${Y2}" r="3.5" fill="#1A1325"/>`;
+
+  // Angle markings depend on type
+  // Compute the small acute angle that transversal makes with horizontal lines
+  // Transversal goes from top-right to bottom-left (cx1>cx2)
+  // At top intersection, the angle between transversal going up-right (towards top of c) and line going right (towards 'a') is some value
+  // At bottom intersection, transversal going down-left meets line going right
+  // For visual purposes, the angles formed: at top, the angle on the right-below is acute matching the tilt
+  // Let me compute: vector along transversal upward = (tx_top - cx1, ty_top - Y1) = (-30*slope, -30). Angle from +x: atan2(-(-30), -30*slope) = ...
+  // Easier: pick a fixed visual angle indicator
+  // Let's just draw arcs in fixed positions for clarity
+
+  const r = 22;
+
+  // At top intersection (cx1, Y1):
+  // Angle below-right (between line 'a' going right and transversal going down-toward 'b')
+  // The line 'a' is horizontal. The transversal goes down-left to (cx2, Y2). So the angle between +x and the transversal-down direction.
+  // direction toward bottom: (cx2-cx1, Y2-Y1) normalized → going to bottom-left
+  // Angle measured from +x axis going CCW (in SVG: -y): atan2(Y1-Y2, cx2-cx1) → atan2(-140, -100ish) → in 3rd quadrant
+  // Let me compute the angle for marking:
+  const angDown = Math.atan2(Y2 - Y1, cx2 - cx1); // direction toward bottom point in SVG coord
+  // For arc drawing, we use the angle below the horizontal line going left toward bottom point
+
+  if (type === 'corresponding') {
+    // label1 at top intersection (right-below) and label2 at bottom intersection (right-below) — these are corresponding
+    // Top: between line 'a' (going right, towards +x) and transversal going down-left (angDown in SVG which is positive y direction)
+    // The interior region right-below at top: from line a rightward, arc going down to transversal
+    // Arc starts at (cx1+r, Y1) and ends at (cx1+r*cos(angDown), Y1+r*sin(angDown))
+    const t1x = cx1 + r, t1y = Y1;
+    const t2x = cx1 + r * Math.cos(angDown), t2y = Y1 + r * Math.sin(angDown);
+    svg += `<path d="M ${t1x} ${t1y} A ${r} ${r} 0 0 1 ${t2x} ${t2y}" fill="none" stroke="#FFB627" stroke-width="2.5"/>`;
+    const labA = angDown / 2;
+    svg += `<text x="${cx1 + (r+22)*Math.cos(labA)}" y="${Y1 + (r+22)*Math.sin(labA)+5}" text-anchor="middle" font-size="14" font-weight="700" fill="#6B2FB3">${label1}</text>`;
+
+    // Bottom: same direction (right-below) — corresponding position
+    const b1x = cx2 + r, b1y = Y2;
+    const b2x = cx2 + r * Math.cos(angDown), b2y = Y2 + r * Math.sin(angDown);
+    svg += `<path d="M ${b1x} ${b1y} A ${r} ${r} 0 0 1 ${b2x} ${b2y}" fill="none" stroke="#FF6B6B" stroke-width="2.5"/>`;
+    svg += `<text x="${cx2 + (r+22)*Math.cos(labA)}" y="${Y2 + (r+22)*Math.sin(labA)+5}" text-anchor="middle" font-size="14" font-weight="700" fill="#DC2626">${label2}</text>`;
+
+  } else if (type === 'alt-interior') {
+    // Top: angle below-LEFT (interior, on side toward bottom but pointing left)
+    // From transversal going down (angDown direction) rotating to line a going left (+180° from +x)
+    const t1x = cx1 + r * Math.cos(angDown), t1y = Y1 + r * Math.sin(angDown);
+    const t2x = cx1 - r, t2y = Y1;
+    svg += `<path d="M ${t1x} ${t1y} A ${r} ${r} 0 0 1 ${t2x} ${t2y}" fill="none" stroke="#FFB627" stroke-width="2.5"/>`;
+    const labA = (angDown + Math.PI) / 2;
+    svg += `<text x="${cx1 + (r+22)*Math.cos(labA)}" y="${Y1 + (r+22)*Math.sin(labA)+5}" text-anchor="middle" font-size="14" font-weight="700" fill="#6B2FB3">${label1}</text>`;
+
+    // Bottom: angle above-RIGHT (interior, on opposite side)
+    const angUp = angDown + Math.PI; // pointing toward top
+    const b1x = cx2 + r, b1y = Y2;
+    const b2x = cx2 + r * Math.cos(angUp), b2y = Y2 + r * Math.sin(angUp);
+    svg += `<path d="M ${b2x} ${b2y} A ${r} ${r} 0 0 1 ${b1x} ${b1y}" fill="none" stroke="#FF6B6B" stroke-width="2.5"/>`;
+    const labB = (0 + angUp) / 2;
+    svg += `<text x="${cx2 + (r+22)*Math.cos(labB)}" y="${Y2 + (r+22)*Math.sin(labB)+5}" text-anchor="middle" font-size="14" font-weight="700" fill="#DC2626">${label2}</text>`;
+
+  } else if (type === 'same-side-interior') {
+    // Top: below-RIGHT
+    const t1x = cx1 + r, t1y = Y1;
+    const t2x = cx1 + r * Math.cos(angDown), t2y = Y1 + r * Math.sin(angDown);
+    svg += `<path d="M ${t1x} ${t1y} A ${r} ${r} 0 0 1 ${t2x} ${t2y}" fill="none" stroke="#FFB627" stroke-width="2.5"/>`;
+    const labA = angDown / 2;
+    svg += `<text x="${cx1 + (r+22)*Math.cos(labA)}" y="${Y1 + (r+22)*Math.sin(labA)+5}" text-anchor="middle" font-size="14" font-weight="700" fill="#6B2FB3">${label1}</text>`;
+
+    // Bottom: above-RIGHT (same side, interior)
+    const angUp = angDown + Math.PI;
+    const b1x = cx2 + r, b1y = Y2;
+    const b2x = cx2 + r * Math.cos(angUp), b2y = Y2 + r * Math.sin(angUp);
+    svg += `<path d="M ${b2x} ${b2y} A ${r} ${r} 0 0 1 ${b1x} ${b1y}" fill="none" stroke="#FF6B6B" stroke-width="2.5"/>`;
+    const labB = (0 + angUp) / 2;
+    svg += `<text x="${cx2 + (r+22)*Math.cos(labB)}" y="${Y2 + (r+22)*Math.sin(labB)+5}" text-anchor="middle" font-size="14" font-weight="700" fill="#DC2626">${label2}</text>`;
+  }
+
+  svg += `</svg>`;
+  return svg;
+}
+
+// 5) UCHBURCHAK
+function svgTriangle({labelA='?', labelB='?', labelC='?', vertexLabels=['A','B','C'], type='normal', width=320, height=240}) {
+  // type: 'normal', 'right', 'isoceles'
+  let A, B, C;
+  if (type === 'right') {
+    A = {x: 60, y: 200}; B = {x: 60, y: 50}; C = {x: 260, y: 200};
+  } else if (type === 'isoceles') {
+    A = {x: 60, y: 200}; B = {x: 260, y: 200}; C = {x: 160, y: 50};
+  } else {
+    A = {x: 50, y: 200}; B = {x: 270, y: 200}; C = {x: 180, y: 50};
+  }
+
+  let svg = `<svg viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg">`;
+  svg += `<path d="M ${A.x} ${A.y} L ${B.x} ${B.y} L ${C.x} ${C.y} Z" fill="rgba(155,107,224,0.08)" stroke="#1A1325" stroke-width="2.5" stroke-linejoin="round"/>`;
+
+  // vertex labels
+  svg += `<text x="${A.x-14}" y="${A.y+8}" font-size="16" font-weight="700" fill="#1A1325">${vertexLabels[0]}</text>`;
+  svg += `<text x="${B.x+8}" y="${B.y+8}" font-size="16" font-weight="700" fill="#1A1325">${vertexLabels[1]}</text>`;
+  svg += `<text x="${C.x-7}" y="${C.y-10}" font-size="16" font-weight="700" fill="#1A1325">${vertexLabels[2]}</text>`;
+
+  // Right angle marker at A if type=right
+  if (type === 'right') {
+    svg += `<rect x="${A.x}" y="${A.y-14}" width="14" height="14" fill="none" stroke="#FFB627" stroke-width="2"/>`;
+  }
+
+  // Isoceles marker (tick marks on equal sides)
+  if (type === 'isoceles') {
+    // Sides CA and CB are equal — small tick at middle
+    function tick(p1, p2) {
+      const mx = (p1.x + p2.x)/2, my = (p1.y + p2.y)/2;
+      const dx = p2.x - p1.x, dy = p2.y - p1.y;
+      const L = Math.hypot(dx, dy);
+      const nx = -dy / L, ny = dx / L; // perpendicular
+      return `<line x1="${mx + 6*nx}" y1="${my + 6*ny}" x2="${mx - 6*nx}" y2="${my - 6*ny}" stroke="#FFB627" stroke-width="2.5"/>`;
+    }
+    svg += tick(A, C);
+    svg += tick(B, C);
+  }
+
+  // Angle labels — placed inside near each vertex
+  function angleLabel(v, p1, p2, txt) {
+    // p1 and p2 are the other two vertices; compute direction into the triangle
+    const dx1 = p1.x - v.x, dy1 = p1.y - v.y;
+    const dx2 = p2.x - v.x, dy2 = p2.y - v.y;
+    const L1 = Math.hypot(dx1,dy1), L2 = Math.hypot(dx2,dy2);
+    const ux = dx1/L1 + dx2/L2, uy = dy1/L1 + dy2/L2;
+    const uL = Math.hypot(ux, uy);
+    const offset = 32;
+    return `<text x="${v.x + offset*ux/uL}" y="${v.y + offset*uy/uL + 5}" text-anchor="middle" font-size="14" font-weight="700" fill="#6B2FB3">${txt}</text>`;
+  }
+  if (labelA !== '?') svg += angleLabel(A, B, C, labelA);
+  if (labelB !== '?') svg += angleLabel(B, A, C, labelB);
+  if (labelC !== '?') svg += angleLabel(C, A, B, labelC);
+
+  svg += `</svg>`;
+  return svg;
+}
+
+// 6) TO'RTBURCHAK
+function svgQuad({angles, vertexLabels=['A','B','C','D'], width=320, height=240}) {
+  // angles: [angA, angB, angC, angD] — labels (strings)
+  // Generic convex quad
+  const pts = [
+    {x: 50, y: 200},   // A bottom-left
+    {x: 70, y: 60},    // B top-left
+    {x: 250, y: 50},   // C top-right
+    {x: 280, y: 210}   // D bottom-right
+  ];
+
+  let svg = `<svg viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg">`;
+  svg += `<path d="M ${pts[0].x} ${pts[0].y} L ${pts[1].x} ${pts[1].y} L ${pts[2].x} ${pts[2].y} L ${pts[3].x} ${pts[3].y} Z" fill="rgba(155,107,224,0.08)" stroke="#1A1325" stroke-width="2.5" stroke-linejoin="round"/>`;
+
+  // vertex labels (outside)
+  const labelOffsets = [{x:-14,y:8},{x:-14,y:-8},{x:8,y:-8},{x:8,y:8}];
+  for (let i=0; i<4; i++) {
+    svg += `<text x="${pts[i].x + labelOffsets[i].x}" y="${pts[i].y + labelOffsets[i].y}" font-size="16" font-weight="700" fill="#1A1325">${vertexLabels[i]}</text>`;
+  }
+
+  // angle labels inside
+  function angLabel(v, pA, pB, txt) {
+    const dx1 = pA.x - v.x, dy1 = pA.y - v.y;
+    const dx2 = pB.x - v.x, dy2 = pB.y - v.y;
+    const L1 = Math.hypot(dx1,dy1), L2 = Math.hypot(dx2,dy2);
+    const ux = dx1/L1 + dx2/L2, uy = dy1/L1 + dy2/L2;
+    const uL = Math.hypot(ux, uy);
+    const offset = 36;
+    return `<text x="${v.x + offset*ux/uL}" y="${v.y + offset*uy/uL + 4}" text-anchor="middle" font-size="13" font-weight="700" fill="#6B2FB3">${txt}</text>`;
+  }
+  if (angles[0]) svg += angLabel(pts[0], pts[3], pts[1], angles[0]);
+  if (angles[1]) svg += angLabel(pts[1], pts[0], pts[2], angles[1]);
+  if (angles[2]) svg += angLabel(pts[2], pts[1], pts[3], angles[2]);
+  if (angles[3]) svg += angLabel(pts[3], pts[2], pts[0], angles[3]);
+
+  svg += `</svg>`;
+  return svg;
+}
+
+// 7) SOAT (clock face)
+function svgClock({hour, minute, width=240, height=240}) {
+  const cx = width/2, cy = height/2;
+  const r = 95;
+
+  let svg = `<svg viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg">`;
+  // face
+  svg += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="#FFFFFF" stroke="#1A1325" stroke-width="3"/>`;
+  svg += `<circle cx="${cx}" cy="${cy}" r="${r-2}" fill="none" stroke="#FFB627" stroke-width="1" opacity="0.4"/>`;
+
+  // Hour ticks
+  for (let i=1; i<=12; i++) {
+    const a = (i * 30 - 90) * Math.PI / 180;
+    const x1 = cx + (r-12) * Math.cos(a);
+    const y1 = cy + (r-12) * Math.sin(a);
+    const x2 = cx + (r-2) * Math.cos(a);
+    const y2 = cy + (r-2) * Math.sin(a);
+    svg += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#1A1325" stroke-width="2"/>`;
+    // numbers
+    const tx = cx + (r-24) * Math.cos(a);
+    const ty = cy + (r-24) * Math.sin(a);
+    svg += `<text x="${tx}" y="${ty+5}" text-anchor="middle" font-size="14" font-weight="700" fill="#1A1325">${i}</text>`;
+  }
+
+  // Hour hand: position based on hour + minute fraction
+  const hourAngle = ((hour % 12) * 30 + minute * 0.5 - 90) * Math.PI / 180;
+  const hL = r - 35;
+  svg += `<line x1="${cx}" y1="${cy}" x2="${cx + hL * Math.cos(hourAngle)}" y2="${cy + hL * Math.sin(hourAngle)}" stroke="#6B2FB3" stroke-width="5" stroke-linecap="round"/>`;
+
+  // Minute hand
+  const minAngle = (minute * 6 - 90) * Math.PI / 180;
+  const mL = r - 18;
+  svg += `<line x1="${cx}" y1="${cy}" x2="${cx + mL * Math.cos(minAngle)}" y2="${cy + mL * Math.sin(minAngle)}" stroke="#DC2626" stroke-width="3" stroke-linecap="round"/>`;
+
+  // Center
+  svg += `<circle cx="${cx}" cy="${cy}" r="6" fill="#1A1325"/>`;
+  svg += `<circle cx="${cx}" cy="${cy}" r="3" fill="#FFB627"/>`;
+
+  // Time text under clock
+  const hh = String(hour).padStart(2,'0');
+  const mm = String(minute).padStart(2,'0');
+  svg += `<text x="${cx}" y="${cy + r + 22}" text-anchor="middle" font-size="15" font-weight="700" fill="#6B2FB3">${hh}:${mm}</text>`;
+
+  svg += `</svg>`;
+  return svg;
+}
+
+// 8) BURCHAK BISSEKTRISA bilan
+function svgBisector({totalDeg, bisLabel='', halfLabel='', width=280, height=200}) {
+  const cx = 50, cy = 160;
+  const rayLen = 170;
+  const arcR = 30;
+  const totalRad = totalDeg * Math.PI / 180;
+  const halfRad = totalRad / 2;
+
+  // First ray: along +x
+  const x1 = cx + rayLen, y1 = cy;
+  // Second ray: at totalDeg
+  const x2 = cx + rayLen * Math.cos(totalRad), y2 = cy - rayLen * Math.sin(totalRad);
+  // Bisector
+  const bx = cx + rayLen * Math.cos(halfRad), by = cy - rayLen * Math.sin(halfRad);
+
+  let svg = `<svg viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg">`;
+  svg += `<line x1="${cx}" y1="${cy}" x2="${x1}" y2="${y1}" stroke="#1A1325" stroke-width="2.5"/>`;
+  svg += `<line x1="${cx}" y1="${cy}" x2="${x2}" y2="${y2}" stroke="#1A1325" stroke-width="2.5"/>`;
+  // Bissektrisa — dashed accent
+  svg += `<line x1="${cx}" y1="${cy}" x2="${bx}" y2="${by}" stroke="#FFB627" stroke-width="2.5" stroke-dasharray="6,4"/>`;
+
+  // Two arcs showing half each
+  const aR = arcR;
+  const a1x = cx + aR, a1y = cy;
+  const am1x = cx + aR * Math.cos(halfRad), am1y = cy - aR * Math.sin(halfRad);
+  const am2x = cx + (aR+8) * Math.cos(halfRad), am2y = cy - (aR+8) * Math.sin(halfRad);
+  const a2x = cx + (aR+8) * Math.cos(totalRad), a2y = cy - (aR+8) * Math.sin(totalRad);
+  svg += `<path d="M ${a1x} ${a1y} A ${aR} ${aR} 0 0 0 ${am1x} ${am1y}" fill="none" stroke="#6B2FB3" stroke-width="2"/>`;
+  svg += `<path d="M ${am2x} ${am2y} A ${aR+8} ${aR+8} 0 0 0 ${a2x} ${a2y}" fill="none" stroke="#6B2FB3" stroke-width="2"/>`;
+
+  // Labels
+  if (halfLabel) {
+    const lr1 = aR + 22;
+    const lx1 = cx + lr1 * Math.cos(halfRad/2);
+    const ly1 = cy - lr1 * Math.sin(halfRad/2);
+    svg += `<text x="${lx1}" y="${ly1+5}" text-anchor="middle" font-size="13" font-weight="700" fill="#6B2FB3">${halfLabel}</text>`;
+    const lx2 = cx + lr1 * Math.cos(halfRad + halfRad/2);
+    const ly2 = cy - lr1 * Math.sin(halfRad + halfRad/2);
+    svg += `<text x="${lx2}" y="${ly2+5}" text-anchor="middle" font-size="13" font-weight="700" fill="#6B2FB3">${halfLabel}</text>`;
+  }
+
+  // Vertex + endpoint labels
+  svg += `<circle cx="${cx}" cy="${cy}" r="4" fill="#1A1325"/>`;
+  svg += `<text x="${cx-12}" y="${cy+18}" font-size="14" font-weight="700" fill="#1A1325">O</text>`;
+  svg += `<text x="${x1+8}" y="${y1+5}" font-size="14" font-weight="700" fill="#1A1325">C</text>`;
+  svg += `<text x="${x2 + 14*Math.cos(totalRad)}" y="${y2 - 14*Math.sin(totalRad) + 5}" font-size="14" font-weight="700" fill="#1A1325" text-anchor="middle">A</text>`;
+  svg += `<text x="${bx + 14*Math.cos(halfRad)}" y="${by - 14*Math.sin(halfRad) + 5}" font-size="14" font-weight="700" fill="#FFB627" text-anchor="middle">B</text>`;
+
+  svg += `</svg>`;
+  return svg;
+}
+
+// 9) QO'SHNI BURCHAK (straight line with one ray)
+function svgAdjacent({deg1, label1, label2, width=320, height=170}) {
+  const cx = width/2, cy = 130;
+  const len = 130;
+  // Horizontal line through cx, cy
+  const lx = cx - len, ly = cy;
+  const rx = cx + len, ry = cy;
+  // Up ray at deg1 from positive x
+  const rad = deg1 * Math.PI / 180;
+  const ux = cx + len * Math.cos(rad);
+  const uy = cy - len * Math.sin(rad);
+
+  let svg = `<svg viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg">`;
+  svg += `<line x1="${lx}" y1="${ly}" x2="${rx}" y2="${ry}" stroke="#1A1325" stroke-width="2.5"/>`;
+  svg += `<line x1="${cx}" y1="${cy}" x2="${ux}" y2="${uy}" stroke="#1A1325" stroke-width="2.5"/>`;
+
+  // Right arc (angle1)
+  const r1 = 28;
+  const ar1x = cx + r1, ar1y = cy;
+  const ar2x = cx + r1 * Math.cos(rad), ar2y = cy - r1 * Math.sin(rad);
+  svg += `<path d="M ${ar1x} ${ar1y} A ${r1} ${r1} 0 0 0 ${ar2x} ${ar2y}" fill="none" stroke="#FFB627" stroke-width="2.5"/>`;
+  // Left arc (angle2)
+  const r2 = 28;
+  const al1x = cx + r2 * Math.cos(rad), al1y = cy - r2 * Math.sin(rad);
+  const al2x = cx - r2, al2y = cy;
+  svg += `<path d="M ${al1x} ${al1y} A ${r2} ${r2} 0 0 0 ${al2x} ${al2y}" fill="none" stroke="#FF6B6B" stroke-width="2.5"/>`;
+
+  // Labels
+  const ll1 = r1 + 18;
+  const lab1x = cx + ll1 * Math.cos(rad/2);
+  const lab1y = cy - ll1 * Math.sin(rad/2);
+  svg += `<text x="${lab1x}" y="${lab1y+5}" text-anchor="middle" font-size="15" font-weight="700" fill="#6B2FB3">${label1}</text>`;
+  const midA = (rad + Math.PI) / 2;
+  const lab2x = cx + (r2 + 18) * Math.cos(midA);
+  const lab2y = cy - (r2 + 18) * Math.sin(midA);
+  svg += `<text x="${lab2x}" y="${lab2y+5}" text-anchor="middle" font-size="15" font-weight="700" fill="#DC2626">${label2}</text>`;
+
+  // Vertex
+  svg += `<circle cx="${cx}" cy="${cy}" r="4" fill="#1A1325"/>`;
+
+  svg += `</svg>`;
+  return svg;
+}
+
+// 10) Triangle on parallel line (for variant 3 Q5)
+function svgTriangleOnParallel({angA, angB, alphaLabel='α', betaLabel='β', width=340, height=240}) {
+  // Triangle ABC with C on top line which is parallel to AB
+  const A = {x: 70, y: 200};
+  const B = {x: 270, y: 200};
+  const C = {x: 170, y: 70};
+
+  let svg = `<svg viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg">`;
+  // Parallel line l through C
+  svg += `<line x1="20" y1="${C.y}" x2="${width-20}" y2="${C.y}" stroke="#1A1325" stroke-width="2.5"/>`;
+  svg += `<text x="${width-20}" y="${C.y-8}" font-size="14" font-weight="700" fill="#1A1325">l</text>`;
+  // Triangle
+  svg += `<path d="M ${A.x} ${A.y} L ${B.x} ${B.y} L ${C.x} ${C.y} Z" fill="rgba(155,107,224,0.08)" stroke="#1A1325" stroke-width="2.5"/>`;
+
+  // Labels
+  svg += `<text x="${A.x-14}" y="${A.y+8}" font-size="16" font-weight="700" fill="#1A1325">A</text>`;
+  svg += `<text x="${B.x+8}" y="${B.y+8}" font-size="16" font-weight="700" fill="#1A1325">B</text>`;
+  svg += `<text x="${C.x-7}" y="${C.y-10}" font-size="16" font-weight="700" fill="#1A1325">C</text>`;
+
+  // Angles at A (between AB and AC)
+  svg += `<text x="${A.x+22}" y="${A.y-8}" font-size="13" font-weight="700" fill="#6B2FB3">${angA}°</text>`;
+  svg += `<text x="${B.x-32}" y="${B.y-8}" font-size="13" font-weight="700" fill="#6B2FB3">${angB}°</text>`;
+  // At C: alpha (right side, between l-right and CB), beta (left side, between l-left and CA)
+  svg += `<text x="${C.x+18}" y="${C.y+15}" font-size="13" font-weight="700" fill="#DC2626">${alphaLabel}</text>`;
+  svg += `<text x="${C.x-22}" y="${C.y+15}" font-size="13" font-weight="700" fill="#FFB627">${betaLabel}</text>`;
+
+  svg += `</svg>`;
+  return svg;
+}
+
+// ============================================================
+// SAVOLLAR BAZASI
+// ============================================================
+const QUIZZES = {
+  // ============================================================
+  // 1-VARIANT — OSON
+  // ============================================================
+  1: {
+    title: "1-variant • Oson",
+    questions: [
+      // Q1: Kesma yig'indisi
+      {
+        q: "$C$ nuqta $AB$ kesmasiga tegishli. $AC = 15$ sm, $CB = 8$ sm. $AB$ kesma uzunligini toping.",
+        visual: () => svgSegment({
+          points: [
+            {pos: 0, label: 'A'},
+            {pos: 0.65, label: 'C'},
+            {pos: 1.0, label: 'B'}
+          ],
+          segments: [
+            {from: 0, to: 1, text: '15 sm'},
+            {from: 1, to: 2, text: '8 sm'}
+          ]
+        }),
+        options: ["$7$ sm", "$15$ sm", "$23$ sm", "$30$ sm"],
+        correct: 2,
+        explain: "$AB = AC + CB = 15 + 8 = 23$ sm."
+      },
+
+      // Q2: Burchak turi
+      {
+        q: "Rasmda $130^\\circ$ li burchak ko'rsatilgan. Bu qaysi turdagi burchak?",
+        visual: () => svgAngle({degrees: 130, label: '130°'}),
+        options: ["O'tkir", "To'g'ri", "O'tmas", "Yoyiq"],
+        correct: 2,
+        explain: "$90^\\circ < 130^\\circ < 180^\\circ$ — bu o'tmas burchak."
+      },
+
+      // Q3: Qo'shni burchak
+      {
+        q: "Qo'shni burchaklardan biri $75^\\circ$. Ikkinchisini toping.",
+        visual: () => svgAdjacent({deg1: 75, label1: '75°', label2: '?'}),
+        options: ["$15^\\circ$", "$95^\\circ$", "$105^\\circ$", "$115^\\circ$"],
+        correct: 2,
+        explain: "Qo'shni burchaklar yig'indisi $180^\\circ$. $180^\\circ - 75^\\circ = 105^\\circ$."
+      },
+
+      // Q4: Vertikal burchak
+      {
+        q: "Ikki to'g'ri chiziq kesishadi. Bir burchak $40^\\circ$. Unga vertikal bo'lgan burchakni toping.",
+        visual: () => svgCross({angle1: 40, label1: '40°', label2: '?', label3: '?', label4: '?'}),
+        options: ["$40^\\circ$", "$90^\\circ$", "$140^\\circ$", "$180^\\circ$"],
+        correct: 0,
+        explain: "Vertikal burchaklar o'zaro teng. $40^\\circ$ ga vertikal — yana $40^\\circ$."
+      },
+
+      // Q5: Uchburchak burchaklari
+      {
+        q: "Uchburchakda ikkita burchak $50^\\circ$ va $65^\\circ$ ga teng. Uchinchi burchakni toping.",
+        visual: () => svgTriangle({labelA: '50°', labelB: '65°', labelC: '?'}),
+        options: ["$55^\\circ$", "$60^\\circ$", "$65^\\circ$", "$70^\\circ$"],
+        correct: 2,
+        explain: "Uchburchak burchaklari yig'indisi $180^\\circ$. $180^\\circ - 50^\\circ - 65^\\circ = 65^\\circ$."
+      },
+
+      // Q6: Bissektrisa
+      {
+        q: "$\\angle AOC = 70^\\circ$. $OB$ — uning bissektrisasi. $\\angle AOB$ ni toping.",
+        visual: () => svgBisector({totalDeg: 70, halfLabel: '35°'}),
+        options: ["$20^\\circ$", "$35^\\circ$", "$45^\\circ$", "$70^\\circ$"],
+        correct: 1,
+        explain: "Bissektrisa burchakni teng ikkiga bo'ladi: $70^\\circ : 2 = 35^\\circ$."
+      },
+
+      // Q7: Soat 9:00
+      {
+        q: "Soat $9{:}00$ da minut va soat millari orasidagi burchakni toping.",
+        visual: () => svgClock({hour: 9, minute: 0}),
+        options: ["$60^\\circ$", "$75^\\circ$", "$90^\\circ$", "$120^\\circ$"],
+        correct: 2,
+        explain: "$9$ raqami va $12$ raqami orasida $3$ ta raqamlik oraliq. Har bir oraliq $30^\\circ$, demak $3 \\cdot 30^\\circ = 90^\\circ$ (to'g'ri burchak)."
+      },
+
+      // Q8: To'rtburchak
+      {
+        q: "To'rtburchakda uchta burchak $80^\\circ$, $90^\\circ$ va $100^\\circ$ ga teng. To'rtinchi burchakni toping.",
+        visual: () => svgQuad({angles: ['80°', '90°', '100°', '?']}),
+        options: ["$80^\\circ$", "$90^\\circ$", "$100^\\circ$", "$110^\\circ$"],
+        correct: 1,
+        explain: "To'rtburchak burchaklari yig'indisi $360^\\circ$. $360^\\circ - 80^\\circ - 90^\\circ - 100^\\circ = 90^\\circ$."
+      },
+
+      // Q9: Parallel chiziqlar — mos burchaklar
+      {
+        q: "$a \\parallel b$. Kesuvchi $a$ chiziq bilan $65^\\circ$ li mos burchak hosil qiladi. $b$ chiziq bilan mos burchakni toping.",
+        visual: () => svgParallel({label1: '65°', label2: '?', type: 'corresponding'}),
+        options: ["$25^\\circ$", "$65^\\circ$", "$90^\\circ$", "$115^\\circ$"],
+        correct: 1,
+        explain: "Parallel chiziqlarda mos burchaklar o'zaro teng: $65^\\circ$."
+      },
+
+      // Q10: Teng yonli — uchidan
+      {
+        q: "Teng yonli uchburchakning uchidagi burchak $40^\\circ$. Asosdagi har bir burchakni toping.",
+        visual: () => svgTriangle({labelA: '?', labelB: '?', labelC: '40°', type: 'isoceles'}),
+        options: ["$50^\\circ$", "$60^\\circ$", "$70^\\circ$", "$80^\\circ$"],
+        correct: 2,
+        explain: "Asosdagi burchaklar teng: $\\alpha = \\dfrac{180^\\circ - 40^\\circ}{2} = \\dfrac{140^\\circ}{2} = 70^\\circ$."
+      }
+    ]
+  },
+
+  // ============================================================
+  // 2-VARIANT — O'RTACHA
+  // ============================================================
+  2: {
+    title: "2-variant • O'rtacha",
+    questions: [
+
+      // Q1: BC = AC + BD - AD
+      {
+        q: "$A,\\ B,\\ C,\\ D$ nuqtalar bir to'g'ri chiziqda shu tartibda joylashgan. $AC = 25$ sm, $BD = 22$ sm, $AD = 35$ sm. $BC$ kesma uzunligini toping.",
+        visual: () => svgSegment({
+          points: [
+            {pos: 0, label: 'A'},
+            {pos: 0.22, label: 'B'},
+            {pos: 0.62, label: 'C'},
+            {pos: 1.0, label: 'D'}
+          ]
+        }),
+        options: ["$10$ sm", "$12$ sm", "$15$ sm", "$18$ sm"],
+        correct: 1,
+        explain: "Foydali formula: $BC = AC + BD - AD = 25 + 22 - 35 = 12$ sm."
+      },
+
+      // Q2: Qo'shni burchak nisbati
+      {
+        q: "Qo'shni burchaklar $4{:}5$ nisbatda. Kichigini toping.",
+        visual: () => svgAdjacent({deg1: 100, label1: '5x', label2: '4x'}),
+        options: ["$60^\\circ$", "$72^\\circ$", "$80^\\circ$", "$100^\\circ$"],
+        correct: 2,
+        explain: "$4x + 5x = 180^\\circ \\Rightarrow 9x = 180^\\circ \\Rightarrow x = 20^\\circ$. Kichigi: $4x = 80^\\circ$."
+      },
+
+      // Q3: Bissektrisa tomon bilan
+      {
+        q: "Burchakning bissektrisasi uning tomoni bilan $32^\\circ$ li burchak tashkil qiladi. Burchakning o'zini toping.",
+        visual: () => svgBisector({totalDeg: 64, halfLabel: '32°'}),
+        options: ["$32^\\circ$", "$58^\\circ$", "$64^\\circ$", "$148^\\circ$"],
+        correct: 2,
+        explain: "Bissektrisa har bir tomondan teng masofada — yarmi $32^\\circ$. Demak butun burchak: $2 \\cdot 32^\\circ = 64^\\circ$."
+      },
+
+      // Q4: Uchburchak nisbati
+      {
+        q: "Uchburchak burchaklari $1{:}3{:}5$ nisbatda. Eng katta burchakni toping.",
+        visual: () => svgTriangle({labelA: 'x', labelB: '3x', labelC: '5x'}),
+        options: ["$60^\\circ$", "$80^\\circ$", "$100^\\circ$", "$120^\\circ$"],
+        correct: 2,
+        explain: "$x + 3x + 5x = 180^\\circ \\Rightarrow 9x = 180^\\circ \\Rightarrow x = 20^\\circ$. Eng katta: $5x = 100^\\circ$."
+      },
+
+      // Q5: Same-side interior
+      {
+        q: "$a \\parallel b$. Bir tomonli ichki burchaklardan biri $108^\\circ$. Ikkinchisini toping.",
+        visual: () => svgParallel({label1: '108°', label2: '?', type: 'same-side-interior'}),
+        options: ["$52^\\circ$", "$62^\\circ$", "$72^\\circ$", "$108^\\circ$"],
+        correct: 2,
+        explain: "Bir tomonli ichki burchaklar yig'indisi $180^\\circ$. $180^\\circ - 108^\\circ = 72^\\circ$."
+      },
+
+      // Q6: Crossing — 3 angles
+      {
+        q: "Ikki to'g'ri chiziq kesishadi. Bir burchak $110^\\circ$ ga teng. Boshqa uchta burchak qancha?",
+        visual: () => svgCross({angle1: 110, label1: '110°', label2: '?', label3: '?', label4: '?'}),
+        options: ["$70^\\circ, 110^\\circ, 70^\\circ$", "$110^\\circ, 70^\\circ, 110^\\circ$", "$110^\\circ, 110^\\circ, 70^\\circ$", "$70^\\circ, 70^\\circ, 110^\\circ$"],
+        correct: 0,
+        explain: "Vertikal burchak — yana $110^\\circ$. Ikkita qo'shni burchak $180^\\circ - 110^\\circ = 70^\\circ$. Demak: $70^\\circ, 110^\\circ, 70^\\circ$."
+      },
+
+      // Q7: Minut mili — 25 daq
+      {
+        q: "Soatning minut mili $25$ daqiqada necha gradusga buriladi?",
+        visual: () => svgClock({hour: 12, minute: 25}),
+        options: ["$120^\\circ$", "$140^\\circ$", "$150^\\circ$", "$180^\\circ$"],
+        correct: 2,
+        explain: "Minut mili $1$ daqiqada $6^\\circ$ buriladi (chunki $360^\\circ : 60 = 6^\\circ$). $25$ daqiqada: $25 \\cdot 6^\\circ = 150^\\circ$."
+      },
+
+      // Q8: Teng yonli — asosdan
+      {
+        q: "Teng yonli uchburchakning asosidagi burchak $75^\\circ$. Uchidagi burchakni toping.",
+        visual: () => svgTriangle({labelA: '75°', labelB: '75°', labelC: '?', type: 'isoceles'}),
+        options: ["$15^\\circ$", "$30^\\circ$", "$45^\\circ$", "$75^\\circ$"],
+        correct: 1,
+        explain: "Teng yonli uchburchakda asosdagi ikki burchak teng. Uchidagi: $180^\\circ - 2 \\cdot 75^\\circ = 30^\\circ$."
+      },
+
+      // Q9: To'rtburchak nisbati
+      {
+        q: "To'rtburchak burchaklari $2{:}3{:}4{:}6$ nisbatda. Eng katta burchakni toping.",
+        visual: () => svgQuad({angles: ['2x', '3x', '4x', '6x']}),
+        options: ["$96^\\circ$", "$120^\\circ$", "$144^\\circ$", "$160^\\circ$"],
+        correct: 2,
+        explain: "$2x + 3x + 4x + 6x = 360^\\circ \\Rightarrow 15x = 360^\\circ \\Rightarrow x = 24^\\circ$. Eng katta: $6x = 144^\\circ$."
+      },
+
+      // Q10: Simple algebraic segment
+      {
+        q: "Rasmdagi $KM$ kesma uzunligi $31$ sm. $KL = 3x+1$, $LM = 2x+5$ bo'lsa, $x$ ni toping.",
+        visual: () => svgSegment({
+          points: [
+            {pos: 0, label: 'K'},
+            {pos: 0.45, label: 'L'},
+            {pos: 1.0, label: 'M'}
+          ],
+          segments: [
+            {from: 0, to: 1, text: '3x+1'},
+            {from: 1, to: 2, text: '2x+5'}
+          ]
+        }),
+        options: ["$3$", "$4$", "$5$", "$6$"],
+        correct: 2,
+        explain: "$KM = KL + LM = (3x+1) + (2x+5) = 5x+6 = 31 \\Rightarrow 5x = 25 \\Rightarrow x = 5$."
+      }
+    ]
+  },
+
+  // ============================================================
+  // 3-VARIANT — QIYIN
+  // ============================================================
+  3: {
+    title: "3-variant • Qiyin",
+    questions: [
+
+      // Q1: Algebraik kesma
+      {
+        q: "$A,\\ B,\\ C,\\ D$ nuqtalar tartibda joylashgan. $AB = 2x$, $BC = x+3$, $CD = x+5$, $AD = 24$ sm. $BC$ kesma uzunligini toping.",
+        visual: () => svgSegment({
+          points: [
+            {pos: 0, label: 'A'},
+            {pos: 0.33, label: 'B'},
+            {pos: 0.62, label: 'C'},
+            {pos: 1.0, label: 'D'}
+          ],
+          segments: [
+            {from: 0, to: 1, text: '2x'},
+            {from: 1, to: 2, text: 'x+3'},
+            {from: 2, to: 3, text: 'x+5'}
+          ]
+        }),
+        options: ["$5$ sm", "$7$ sm", "$9$ sm", "$11$ sm"],
+        correct: 1,
+        explain: "$2x + (x+3) + (x+5) = 24 \\Rightarrow 4x + 8 = 24 \\Rightarrow 4x = 16 \\Rightarrow x = 4$. $BC = x+3 = 7$ sm."
+      },
+
+      // Q2: Qo'shni bissektrisalari
+      {
+        q: "Qo'shni burchaklarning bissektrisalari orasidagi burchak nechiga teng?",
+        visual: () => svgAdjacent({deg1: 110, label1: 'α', label2: 'β'}),
+        options: ["$60^\\circ$", "$90^\\circ$", "$120^\\circ$", "Burchakka bog'liq"],
+        correct: 1,
+        explain: "Agar burchaklar $\\alpha$ va $180^\\circ-\\alpha$ bo'lsa, bissektrisalari orasidagi burchak: $\\dfrac{\\alpha}{2} + \\dfrac{180^\\circ-\\alpha}{2} = 90^\\circ$. Doimo $90^\\circ$!"
+      },
+
+      // Q3: Bissektrisa va qo'shni
+      {
+        q: "Burchakning bissektrisasi uning tomoni bilan $25^\\circ$ li burchak tashkil qiladi. Bu burchakka qo'shni bo'lgan burchakning yarmini toping.",
+        visual: () => svgBisector({totalDeg: 50, halfLabel: '25°'}),
+        options: ["$50^\\circ$", "$55^\\circ$", "$65^\\circ$", "$130^\\circ$"],
+        correct: 2,
+        explain: "Bissektrisa tomon bilan $25^\\circ$ tashkil etsa, asl burchak $= 2 \\cdot 25^\\circ = 50^\\circ$. Qo'shni burchak: $180^\\circ - 50^\\circ = 130^\\circ$. Uning yarmi: $65^\\circ$."
+      },
+
+      // Q4: Tashqi burchak
+      {
+        q: "Uchburchakning ichki burchaklaridan ikkitasi $65^\\circ$ va $75^\\circ$. Bu burchaklarga qo'shni bo'lmagan tashqi burchakni toping.",
+        visual: () => svgTriangle({labelA: '65°', labelB: '75°', labelC: '?'}),
+        options: ["$40^\\circ$", "$110^\\circ$", "$130^\\circ$", "$140^\\circ$"],
+        correct: 3,
+        explain: "Uchinchi burchak: $180^\\circ - 65^\\circ - 75^\\circ = 40^\\circ$. Unga qo'shni tashqi burchak: $180^\\circ - 40^\\circ = 140^\\circ$. (Yoki: tashqi burchak $=$ ikki qo'shni bo'lmagan ichki burchak yig'indisiga teng: $65^\\circ + 75^\\circ = 140^\\circ$.)"
+      },
+
+      // Q5: Parallel algebraic
+      {
+        q: "$a \\parallel b$. Bir tomonli ichki burchaklar $3x + 20^\\circ$ va $2x + 10^\\circ$. $x$ ni toping.",
+        visual: () => svgParallel({label1: '3x+20°', label2: '2x+10°', type: 'same-side-interior'}),
+        options: ["$20^\\circ$", "$25^\\circ$", "$30^\\circ$", "$35^\\circ$"],
+        correct: 2,
+        explain: "Bir tomonli ichki burchaklar yig'indisi $180^\\circ$: $(3x+20^\\circ) + (2x+10^\\circ) = 180^\\circ \\Rightarrow 5x + 30^\\circ = 180^\\circ \\Rightarrow 5x = 150^\\circ \\Rightarrow x = 30^\\circ$."
+      },
+
+      // Q6: To'rtburchak algebraik
+      {
+        q: "$ABCD$ to'rtburchakning burchaklari $3x$, $2x+30^\\circ$, $90^\\circ$ va $3x$. $x$ ni toping.",
+        visual: () => svgQuad({angles: ['3x', '2x+30°', '90°', '3x']}),
+        options: ["$20^\\circ$", "$25^\\circ$", "$30^\\circ$", "$45^\\circ$"],
+        correct: 2,
+        explain: "$3x + (2x+30^\\circ) + 90^\\circ + 3x = 360^\\circ \\Rightarrow 8x + 120^\\circ = 360^\\circ \\Rightarrow 8x = 240^\\circ \\Rightarrow x = 30^\\circ$."
+      },
+
+      // Q7: Soat 3:30
+      {
+        q: "Soat $3{:}30$ da soat va minut millari orasidagi burchakni toping.",
+        visual: () => svgClock({hour: 3, minute: 30}),
+        options: ["$60^\\circ$", "$75^\\circ$", "$90^\\circ$", "$105^\\circ$"],
+        correct: 1,
+        explain: "Minut mili $6$ raqamida ($180^\\circ$). Soat mili $30$ daqiqada $30 \\cdot 0{,}5^\\circ = 15^\\circ$ ham buriladi: $3 \\cdot 30^\\circ + 15^\\circ = 105^\\circ$. Orasidagi burchak: $180^\\circ - 105^\\circ = 75^\\circ$."
+      },
+
+      // Q8: Bissektrisalar formulasi
+      {
+        q: "$\\triangle ABC$ da $\\angle C = 70^\\circ$. $A$ va $B$ uchlaridagi bissektrisalar $I$ nuqtada kesishadi. $\\angle AIB$ ni toping.",
+        visual: () => svgTriangle({labelA: '?', labelB: '?', labelC: '70°'}),
+        options: ["$110^\\circ$", "$120^\\circ$", "$125^\\circ$", "$135^\\circ$"],
+        correct: 2,
+        explain: "Mashhur formula: $\\angle AIB = 90^\\circ + \\dfrac{\\angle C}{2} = 90^\\circ + 35^\\circ = 125^\\circ$."
+      },
+
+      // Q9: Yoyiq 3 nurga
+      {
+        q: "Yoyiq burchak $3$ ta nur bilan $4$ ta burchakka bo'lingan. Hosil bo'lgan burchaklar $1{:}2{:}3{:}4$ nisbatida. Eng katta burchakni toping.",
+        visual: () => svgAngle({degrees: 180, label: '180°'}),
+        options: ["$54^\\circ$", "$60^\\circ$", "$72^\\circ$", "$90^\\circ$"],
+        correct: 2,
+        explain: "$x + 2x + 3x + 4x = 180^\\circ \\Rightarrow 10x = 180^\\circ \\Rightarrow x = 18^\\circ$. Eng katta: $4x = 72^\\circ$."
+      },
+
+      // Q10: 4 nur ketma-ket — yoyiq
+      {
+        q: "Bir nuqtadan to'rtta nur ketma-ket chiqqan: $\\angle AOB = 4x$, $\\angle BOC = 3x$, $\\angle COD = 2x$. Agar $A,\\ O,\\ D$ bir to'g'ri chiziqda yotsa, $\\angle BOC$ ni toping.",
+        visual: () => svgAngle({degrees: 180, label: '180°'}),
+        options: ["$40^\\circ$", "$60^\\circ$", "$80^\\circ$", "$90^\\circ$"],
+        correct: 1,
+        explain: "$A, O, D$ bir chiziqda — demak $\\angle AOD = 180^\\circ$. Demak $4x + 3x + 2x = 180^\\circ \\Rightarrow 9x = 180^\\circ \\Rightarrow x = 20^\\circ$. $\\angle BOC = 3x = 60^\\circ$."
+      }
+    ]
+  }
+};
+
+// ============================================================
+// QUIZ LOGIC
+// ============================================================
+let state = {
+  level: 1,
+  current: 0,
+  answers: [],
+  selectedIndex: null
+};
+
+const screens = {
+  start: document.getElementById('screen-start'),
+  quiz: document.getElementById('screen-quiz'),
+  result: document.getElementById('screen-result')
+};
+
+function showScreen(name) {
+  Object.values(screens).forEach(s => s.classList.remove('active'));
+  screens[name].classList.add('active');
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function startQuiz(level) {
+  state.level = level;
+  state.current = 0;
+  state.answers = [];
+  state.selectedIndex = null;
+
+  const colors = {1: '#16A34A', 2: '#F59E0B', 3: '#DC2626'};
+  document.getElementById('levelBadge').style.background = colors[level];
+  document.getElementById('levelBadge').textContent = level;
+  document.getElementById('levelTitle').textContent = QUIZZES[level].title;
+
+  showScreen('quiz');
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const quiz = QUIZZES[state.level];
+  const qIndex = state.current;
+  const q = quiz.questions[qIndex];
+  state.selectedIndex = null;
+
+  const progress = ((qIndex) / quiz.questions.length) * 100;
+  document.getElementById('progressFill').style.width = progress + '%';
+  document.getElementById('progressText').textContent = `${qIndex + 1} / ${quiz.questions.length}`;
+
+  const letters = ['A', 'B', 'C', 'D'];
+  const card = document.getElementById('questionCard');
+  card.classList.remove('pop');
+  void card.offsetWidth;
+  card.classList.add('pop');
+
+  const visualHTML = q.visual ? `<div class="q-visual">${q.visual()}</div>` : '';
+
+  card.innerHTML = `
+    <div class="q-number">SAVOL ${qIndex + 1}</div>
+    <div class="q-text">${q.q}</div>
+    ${visualHTML}
+    <div class="options">
+      ${q.options.map((opt, i) => `
+        <button class="option" data-index="${i}" onclick="selectOption(${i})">
+          <span class="option-letter">${letters[i]}</span>
+          <span class="option-text">${opt}</span>
+          <span class="option-mark"></span>
+        </button>
+      `).join('')}
+    </div>
+    <div class="feedback" id="feedback"></div>
+  `;
+
+  if (window.renderMathInElement) {
+    renderMathInElement(card, {
+      delimiters: [{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],
+      throwOnError: false
+    });
+  }
+
+  document.getElementById('nextBtn').disabled = true;
+  document.getElementById('nextBtn').textContent =
+    qIndex === quiz.questions.length - 1 ? "Natijani ko'rish ✓" : "Keyingi savol →";
+}
+
+function selectOption(index) {
+  if (state.selectedIndex !== null) return;
+
+  state.selectedIndex = index;
+  const q = QUIZZES[state.level].questions[state.current];
+  const isCorrect = index === q.correct;
+  state.answers.push({selected: index, correct: q.correct, isCorrect});
+
+  const options = document.querySelectorAll('.option');
+  options.forEach((opt, i) => {
+    opt.disabled = true;
+    if (i === q.correct) {
+      opt.classList.add('correct');
+      opt.querySelector('.option-mark').textContent = '✓';
+    } else if (i === index && !isCorrect) {
+      opt.classList.add('wrong');
+      opt.querySelector('.option-mark').textContent = '✗';
+    }
+  });
+
+  const fb = document.getElementById('feedback');
+  fb.className = 'feedback show ' + (isCorrect ? 'correct' : 'wrong');
+  fb.innerHTML = `
+    <strong>${isCorrect ? '✓ To\'g\'ri javob!' : '✗ Noto\'g\'ri javob'}</strong>
+    <span>${q.explain}</span>
+  `;
+
+  if (window.renderMathInElement) {
+    renderMathInElement(fb, {
+      delimiters: [{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],
+      throwOnError: false
+    });
+  }
+
+  document.getElementById('nextBtn').disabled = false;
+}
+
+function nextQuestion() {
+  const quiz = QUIZZES[state.level];
+  if (state.current < quiz.questions.length - 1) {
+    state.current++;
+    renderQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function showResult() {
+  const quiz = QUIZZES[state.level];
+  const correct = state.answers.filter(a => a.isCorrect).length;
+  const wrong = quiz.questions.length - correct;
+  const percent = Math.round((correct / quiz.questions.length) * 100);
+
+  document.getElementById('progressFill').style.width = '100%';
+  document.getElementById('finalScore').textContent = correct;
+  document.getElementById('statCorrect').textContent = correct;
+  document.getElementById('statWrong').textContent = wrong;
+  document.getElementById('statPercent').textContent = percent + '%';
+
+  let icon, title, msg;
+  if (percent === 100) {
+    icon = '🏆'; title = 'Mukammal natija!'; msg = "Hammasi to'g'ri! Mavzuni a'lo darajada o'zlashtirgansiz.";
+  } else if (percent >= 80) {
+    icon = '🎉'; title = 'Ajoyib natija!'; msg = "Juda yaxshi ishladingiz. Yana biroz mashq — va mukammal bo'lasiz.";
+  } else if (percent >= 60) {
+    icon = '👍'; title = 'Yaxshi!'; msg = "Asoslarni egallagansiz. Xato bergan savollarni qayta ko'rib chiqing.";
+  } else if (percent >= 40) {
+    icon = '📚'; title = "O'rtacha natija"; msg = "Mavzu ustida yana ishlash kerak. Xato bergan savollarni diqqat bilan ko'rib chiqing.";
+  } else {
+    icon = '💪'; title = 'Tushkunlikka tushmang!'; msg = "Mavzuni boshidan o'qib, qayta urinib ko'ring. Siz uddalaysiz!";
+  }
+
+  document.getElementById('resultIcon').textContent = icon;
+  document.getElementById('resultTitle').textContent = title;
+  document.getElementById('resultMessage').textContent = msg;
+  document.getElementById('reviewSection').style.display = 'none';
+
+  showScreen('result');
+}
+
+function showReview() {
+  const section = document.getElementById('reviewSection');
+  if (section.style.display === 'block') {
+    section.style.display = 'none';
+    return;
+  }
+
+  const quiz = QUIZZES[state.level];
+  const letters = ['A', 'B', 'C', 'D'];
+  const list = document.getElementById('reviewList');
+
+  list.innerHTML = state.answers.map((a, i) => {
+    const q = quiz.questions[i];
+    return `
+      <div class="review-item ${a.isCorrect ? '' : 'wrong'}">
+        <div class="review-item-header">
+          <span class="review-item-num">SAVOL ${i + 1}</span>
+          <span class="review-item-status ${a.isCorrect ? 'correct' : 'wrong'}">
+            ${a.isCorrect ? "✓ To'g'ri" : "✗ Xato"}
+          </span>
+        </div>
+        <div class="review-item-q">${q.q}</div>
+        <div class="review-item-a">
+          Sizning javobingiz: <strong>${letters[a.selected]}) ${q.options[a.selected]}</strong><br>
+          ${a.isCorrect ? '' : `To'g'ri javob: <strong style="color:var(--success)">${letters[q.correct]}) ${q.options[q.correct]}</strong><br>`}
+          <em style="color:var(--text-muted)">${q.explain}</em>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  section.style.display = 'block';
+
+  if (window.renderMathInElement) {
+    renderMathInElement(list, {
+      delimiters: [{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],
+      throwOnError: false
+    });
+  }
+
+  setTimeout(() => section.scrollIntoView({behavior:'smooth', block:'start'}), 100);
+}
+
+function exitQuiz() {
+  if (screens.quiz.classList.contains('active') && state.current > 0 && state.selectedIndex === null) {
+    if (!confirm('Testni tark etmoqchimisiz? Natijalar saqlanmaydi.')) return;
+  }
+  document.getElementById('reviewSection').style.display = 'none';
+  showScreen('start');
+}
+</script>
+
+</body>
+</html>
